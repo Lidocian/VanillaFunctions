@@ -1,0 +1,27 @@
+## Interface: 20403
+## Title: Vanilla Functions
+## Author: Ralicx
+## Notes: Function Extensions
+
+VanillaFunctions.lua
+vf_attack.lua
+vf_buffs.lua
+vf_casting.lua
+vf_chat.lua
+vf_class_mage.lua
+vf_class_paladin.lua
+vf_class_priest.lua
+vf_class_shaman.lua
+vf_class_warlock.lua
+vf_info.lua
+vf_focus.lua
+vf_petStatus.lua
+vf_spellbook.lua
+vf_targeting.lua
+vf_talents.lua
+
+vf_unitsets.lua
+
+vf_multibuff.lua
+vf_multiclean.lua
+vf_multiheal.lua
