@@ -17,7 +17,7 @@ function buffStacks(buff, unit)
 	end
 
 	iBuff = 1
-	name, rank, iconTexture, count, debuffType, duration, timeLeft  =  UnitDebuff(unit, iBuff)
+	name, rank, iconTexture, count, debuffType, duration, timeLeft = UnitDebuff(unit, iBuff)
 	while name ~= nil and name ~= buff do
 		iBuff = iBuff + 1
 		name, rank, iconTexture, count, debuffType, duration, timeLeft = UnitDebuff(unit, iBuff)

@@ -1,6 +1,26 @@
--- Min Settings
+local vf_slave = false
 
-function vf_superLow()
+function vf_setSlave()
+	vf_slave = true
+end
+
+function vf_setMaster()
+	vf_slave = false
+end
+
+function vf_isSlave()
+	return vf_slave
+end
+
+function vf_isMaster()
+	return not vf_slave
+end
+
+
+function vf_slaveSetup()
+	ChangeActionBarPage(2)
+	vf_setSlave()
+
 	ConsoleExec("SET weatherDensity 0")
 	ConsoleExec("m2Faster 1")
 	ConsoleExec("ffx 0")
@@ -38,7 +58,27 @@ function vf_superLow()
 end
 
 
+-- Combat Modes
 
+vf_extendedRotationEnabled = false
+
+function vf_enableExtendedRotation()
+	vf_extendedRotationEnabled = true
+end
+
+function vf_disableExtendedRotation()
+	vf_extendedRotationEnabled = false
+end
+
+vf_superExtendedRotationEnabled = false
+
+function vf_enableSuperExtendedRotation()
+	vf_superExtendedRotationEnabled = true
+end
+
+function vf_disableSuperExtendedRotation()
+	vf_superExtendedRotationEnabled = false
+end
 
 
 -- Utility
@@ -52,149 +92,25 @@ function print(message)
 end
 
 
--- Casting
-
-local vf_casting = false
-function casting()
-	return vf_casting
-end
-
-local vf_channeling = false
-function channeling()
-	return vf_channeling
-end
-
-function castingOrChanneling()
-	return vf_casting or vf_channeling
-end
-
-local vf_currentCastSpellName = ""
-function currentCastSpellName()
-	return vf_currentCastSpellName
-end
-
-local vf_currentCastDuration = 0
-function currentCastDuration()
-	return vf_currentCastDuration
-end
-
-local vf_currentCastStartTime = 0
-function currentCastStartTime()
-	return vf_currentCastStartTime
-end
-
-local vf_currentCastEndTime = 0
-function currentCastEndTime()
-	return vf_currentCastEndTime
-end
-
-function currentCastTimeRemaining()
-	local currentTime = GetTime()*1000
-	return vf_currentCastStartTime + vf_currentCastDuration - currentTime
-end
-
--- Addon Functions
-
-function vf_onLoad()
-	--Print("Varua Functions Loaded")
-end
-
 
 -- Frame and Events
+
+function vf_onLoad()
+	--print("Vanilla Functions Loaded")
+end
+
 
 local vf_frame = CreateFrame("Frame")
 local vf_events = {}
 
+
 function vf_events:ADDON_LOADED(addonName)
-	if addonName == "VaruaFunctions" then
+	if addonName == "VanillaFunctions" then
 		vf_frame:UnregisterEvent("ADDON_LOADED")
 		vf_onLoad()
 	end
 end
 
-function vf_castingStarted(spellName, startTime, endTime)
-	vf_currentCastSpellName = spellName
-	vf_currentCastStartTime = startTime
-	vf_currentCastEndTime = endTime
-	vf_currentCastDuration = endTime - startTime
-end
-
-function vf_castingStopped()
-	vf_casting = false
-	vf_channeling = false
-	vf_currentCastSpellName = ""
-	vf_currentCastDuration = 0
-	vf_currentCastStartTime = 0
-	vf_currentCastEndTime = 0
-end
-
-function vf_events:UNIT_SPELLCAST_START(unit, spellName, spellRank)
-	if unit ~= "player" then return end
-	local spell, rank, displayName, icon, startTime, endTime = UnitCastingInfo("player")
-	--print("SPELLCAST_START: "..spellName)
-	vf_casting = true
-	vf_castingStarted(spellName, startTime, endTime)
-end
-
-function vf_events:UNIT_SPELLCAST_STOP(unit, spellName, spellRank)
-	if unit ~= "player" then return end
-	--print("SPELLCAST_STOP")
-	if not channeling() then
-		vf_castingStopped()
-	end
-end
-
-function vf_events:UNIT_SPELLCAST_CHANNEL_START(unit, spellName, spellRank)
-	if unit ~= "player" then return end
-	local spell, rank, displayName, icon, startTime, endTime = UnitChannelInfo("player")
-	--print("SPELLCAST_CHANNEL_START: "..spellName)
-	vf_channeling = true
-	vf_castingStarted(spellName, startTime, endTime)
-end
-
-function vf_events:UNIT_SPELLCAST_CHANNEL_STOP(unit, spellName, spellRank)
-	if unit ~= "player" then return end
-	--print("SPELLCAST_CHANNEL_STOP")
-	vf_castingStopped()
-end
-
-function vf_events:UNIT_SPELLCAST_DELAYED(unit, spellName, spellRank)
-	if unit ~= "player" then return end
-	local spell, rank, displayName, icon, startTime, endTime = UnitCastingInfo("player")
-	vf_currentCastDuration = endTime - vf_currentCastStartTime
-	--print("SPELLCAST_DELAYED: "..vf_currentCastDuration)
-end
-
-function vf_events:UNIT_SPELLCAST_CHANNEL_UPDATE(unit, spellName, spellRank)
-	if unit ~= "player" then return end
-	local spell, rank, displayName, icon, startTime, endTime = UnitChannelInfo("player")
-	vf_currentCastDuration = endTime - vf_currentCastStartTime
-	--print("SPELLCAST_CHANNEL_UPDATE: ")2w
-end
-
-function vf_events:UNIT_SPELLCAST_FAILED(unit, spellName, spellRank)
-	if unit ~= "player" then return end
-	--print("SPELLCAST_FAILED")
-	vf_castingStopped()
-end
-
-function vf_events:UNIT_SPELLCAST_FAILED_QUIET(unit, spellName, spellRank)
-	if unit ~= "player" then return end
-	--print("SPELLCAST_FAILED_QUIET")
-	vf_castingStopped()
-end
-
-function vf_events:UNIT_SPELLCAST_INTERRUPTED(unit, spellName, spellRank)
-	if unit ~= "player" then return end
-	--print("SPELLCAST_INTERRUPTED")
-	vf_castingStopped()
-end
-
-function vf_events:UNIT_SPELLCAST_SUCCEEDED(unit, spellName, spellRank)
-	if unit ~= "player" then return end
-	--print("UNIT_SPELLCAST_SUCCEEDED")
-	vf_castingStopped()
-end
 
 for k, v in pairs(vf_events) do
 	vf_frame:RegisterEvent(k)
@@ -206,6 +122,10 @@ function vf_eventHandler(this, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, 
 	arg3 = arg3 or "nil"
 	arg4 = arg4 or "nil"
 	arg5 = arg5 or "nil"
+	arg6 = arg6 or "nil"
+	arg7 = arg7 or "nil"
+	arg8 = arg8 or "nil"
+	arg9 = arg9 or "nil"
 	--print(event..", "..arg1..", "..arg2..", "..arg3..", "..arg4..", "..arg5)
 	vf_events[event](vf_events, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 end

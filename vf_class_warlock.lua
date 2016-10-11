@@ -1,4 +1,4 @@
-function vf_summon(player)
+function summon(player)
 	if haveTarget() then
 		whisperChat("Summoning you", UnitName("target"))
 		sayChat("Summoning %t")
@@ -6,7 +6,7 @@ function vf_summon(player)
 	end
 end
 
-function vf_soulstone(player)
+function soulstone(player)
 	if haveInBags("Major Soulstone") then
 		if UnitName("target") then
 			useFromBags("Major Soulstone")
@@ -18,7 +18,7 @@ function vf_soulstone(player)
 end
 
 function darkPact()
-	if petMana() > 250 then cast("Dark Pact") end
+	if petMana() > 700 then cast("Dark Pact") end
 end
 
 function casttap(spell)
@@ -40,28 +40,77 @@ function debufftap(spell)
 end
 
 function lifeTapMana()
-	return 130
+	return 1250
 end
 
-function fullWarlockWhammy()
-	debufftap("Corruption")
-	debufftap("Immolate")
-	debufftap("Siphon Life")
-end
-
-function vf_warlock_dps_rot(curse)
+function vf_warlock_buffs()
 	if not inCombat() then
 		buffSelf("Fel Armor")
 		if not buffed("Blood Pact") then cast("Summon Imp") end
 	end
+end
+
+
+
+
+function vf_warlock_superRotation()
+	if vf_superExtendedRotationEnabled then
+		debufftap("Siphon Life")
+	end
+end
+
+function vf_warlock_extendedRotation(curse)
+	if vf_extendedRotationEnabled then
+		if curse then debufftap(curse) end
+		debufftap("Corruption")
+		debufftap("Immolate")
+	end
+end
+
+function vf_warlock_dps_rot(curse)
 
 	assistFocus()
 	if haveTarget() and targetIsEnemy() and targetInCombat() then
 		--if healthPct("target") < 0.4 then cast("Drain Soul", 1) end
-		
-		if curse then debufftap(curse) end
-		--fullWarlockWhammy()
+		if buffed("Shadow Trance") then casttap("Shadow Bolt") end
+		vf_warlock_superRotation()
+		vf_warlock_extendedRotation(curse)
+		casttap("Shadow Bolt")
+	end
 
+	if manaDeficit() > lifeTapMana() then
+		darkPact()
+		cast("Life Tap")
+	end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function vf_warlock_sextendedRotation(curse)
+	if vf_extendedRotationEnabled then
+		debufftap("Corruption")
+		debufftap("Siphon Life")
+		debufftap("Immolate")
+	end
+end
+
+function vf_warlock_sdps_rot(curse)
+
+	if haveTarget() and targetIsEnemy() then
+		if curse then debufftap(curse) end
+		if buffed("Shadow Trance") then casttap("Shadow Bolt") end
+		vf_warlock_sextendedRotation(curse)
 		casttap("Shadow Bolt")
 	end
 
