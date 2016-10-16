@@ -136,7 +136,7 @@ function vf_shaman_heal_rot()
 		manatideTotem()
 	end
 
-	basicPartyHeal("Healing Wave", 12, 3100)
+	partyHeal("Healing Wave", 12, 3100)
 	--strengthTotem()
 	tremorTotem()
 	--stoneskinTotem()
@@ -146,8 +146,8 @@ function vf_shaman_heal_rot()
 
 	partyClean()
 
-	basicPartyHeal("Healing Wave", 9, 2100)
-	basicPartyHeal("Healing Wave", 6, 1000)
+	partyHeal("Healing Wave", 9, 2100)
+	partyHeal("Healing Wave", 6, 1000)
 
 	targetFocus()
 	buffTarget("Earth Shield")
