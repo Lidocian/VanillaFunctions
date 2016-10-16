@@ -56,8 +56,15 @@ function debuffTarget(debuff)
 	buffTarget(debuff)
 end
 
+function wand()
+	if haveTarget() and targetIsEnemy() and targetInCombat() then
+		cast("Shoot")
+		return true
+	end
+end
 
--- Casting
+
+-- Events
 
 local vf_casting = false
 function casting()

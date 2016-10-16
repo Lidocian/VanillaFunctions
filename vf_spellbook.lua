@@ -18,17 +18,12 @@ function spellIndex(spellName, rank)
 	return nil, BOOKTYPE_SPELL
 end
 
-function knowSpell(spellName, rank)
-	local ispellIndex = spellIndex(spellName, rank)
-	return ispellIndex ~= nil
+function knowSpell(spellName)
+	return GetSpellInfo(spellName) ~= nil
 end
 
 function spellCooldown(spellName)
-	if not knowSpell(spellName) then
-		return -1
-	end
-
-	local start, duration, enabled = GetSpellCooldown(spellIndex(spellName))
+	local start, duration, enabled = GetSpellCooldown(spellName)
 	if enabled == 0 then
 		return 1
 	else
@@ -38,12 +33,22 @@ function spellCooldown(spellName)
 	end
 end
 
-function spellReady(spellName)
+function spellOffCooldown(spellName)
 	return spellCooldown(spellName) == 0
 end
 
+function spellInRange(spellName, unit)
+	unit = unit or "target"
+	if not SpellHasRange(spellName) then return true end
+	return IsSpellInRange(spellName,unit) == 1
+end
+
+function spellReady(spellName)
+	return knowSpell(spellName) and spellOffCooldown(spellName) and spellInRange(spellName)
+end
+
 function spellMana(spellName)
-	 local _,_,_,mana,_,_,_,_,_= GetSpellInfo(spellName)
+	 local _,_,_,mana,_,_,_,_,_ = GetSpellInfo(spellName)
 	 return mana
 end
 

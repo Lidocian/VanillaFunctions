@@ -29,7 +29,6 @@ function partyClean()
 	for iParty = 1, table.getn(unitSet) do
 		if not dead(unitSet[iParty]) and onGrid(unitSet[Party]) then
 			local spell = getCleansableDebuffSpell(unitSet[iParty])
-			print(spell)
 			if spell then
 				castOnUnit(spell, 0, unitSet[iParty])
 				return

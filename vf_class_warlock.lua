@@ -53,8 +53,9 @@ end
 
 
 
-function vf_warlock_superRotation()
+function vf_warlock_superExtendedRotation()
 	if vf_superExtendedRotationEnabled then
+		useTrinkets()
 		debufftap("Siphon Life")
 	end
 end
@@ -67,14 +68,23 @@ function vf_warlock_extendedRotation(curse)
 	end
 end
 
+local vf_getShards = false
 function vf_warlock_dps_rot(curse)
+	if not inCombat() then
+		buffSelf("Fel Armor")
+	end
+	--target("Ethereal Beacon")
+	--if targetName() ~= "Ethereal Beacon" or dead("target") then assistFocus() end
 
 	assistFocus()
+	--if haveTarget() and targetIsEnemy() and targetInCombat() then cast("Shoot") return end
 	if haveTarget() and targetIsEnemy() and targetInCombat() then
-		--if healthPct("target") < 0.4 then cast("Drain Soul", 1) end
+		if vf_getShards == true and health("target") < 2500 then cast("Drain Soul", 1) end
 		if buffed("Shadow Trance") then casttap("Shadow Bolt") end
-		vf_warlock_superRotation()
+		--if targetName() ~= "Ethereal Beacon" then
+		vf_warlock_superExtendedRotation()
 		vf_warlock_extendedRotation(curse)
+		--end
 		casttap("Shadow Bolt")
 	end
 

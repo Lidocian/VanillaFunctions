@@ -118,9 +118,10 @@ end
 
 function vf_shaman_superRotation()
 	if vf_superExtendedRotationEnabled then
+		cast("Bloodlust")
+		useTrinkets()
 		earthelementalTotem()
 		fireelementalTotem()
-		cast("Bloodlust")
 	end
 end
 

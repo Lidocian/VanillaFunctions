@@ -1,4 +1,4 @@
-vf_focustarget = ""
+local vf_focustarget = ""
 function setFocus()
 	vf_focustarget = UnitName("target")
 end

@@ -1,8 +1,3 @@
-function paladinMount()
-	buffSelf("Crusader Aura")
-	cast("Summon Warhorse")
-end
-
 function paladinTaunt()
 	if not haveAggro() then
 		target("targettarget")
@@ -12,25 +7,25 @@ function paladinTaunt()
 end
 
 function vf_paladin_buff_rot()
-	multiBless("Blessing of Salvation", "SHAMAN")
-	multiBless("Blessing of Salvation", "PRIEST")
-	multiBless("Blessing of Salvation", "WARLOCK")
-	multiBless("Blessing of Salvation", "MAGE")
-	multiBless("Blessing of Might", "ROGUE")
+	if not inCombat() then
+		buffSelf("Righteous Fury")
+		buffSelf("Greater Blessing of Sanctuary")
+
+		multiBless("Blessing of Salvation", "SHAMAN")
+		multiBless("Blessing of Salvation", "PRIEST")
+		multiBless("Blessing of Salvation", "WARLOCK")
+		multiBless("Blessing of Salvation", "MAGE")
+		multiBless("Blessing of Might", "ROGUE")
+	end
 end
 
 
 function vf_paladin_tank_rot()
-	if not inCombat() then vf_paladin_buff_rot() end
+	vf_paladin_buff_rot()
 
 	partyClean()
-
-	--buffSelf("Retribution Aura")
-
-	buffSelf("Righteous Fury")
-
-	buffSelf("Greater Blessing of Sanctuary")
-	buffSelf("Seal of Righteousness")
+	
+	if not buffed("Seal of the Crusader") then buffSelf("Seal of Righteousness") end
 	
 	if haveTarget() and targetIsEnemy() then
 		attack()

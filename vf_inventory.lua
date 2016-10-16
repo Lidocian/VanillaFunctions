@@ -32,6 +32,42 @@ function useItem(itemName)
 	end
 end
 
+function useTrinket1()
+	UseInventoryItem(13)
+end
+
+function useTrinket2()
+	UseInventoryItem(14)
+end
+
+function useTrinkets()
+	UseInventoryItem(13)
+	UseInventoryItem(14)
+end
+
+local vf_landMountSpells = {"Summon Warhorse", "Summon Felsteed"}
+local vf_landMountItems = {"Brown Skeletal Horse", "Gray Kodo", "Black Hawkstrider"}
+local vf_flyingMountSpells = {}
+local vf_flyingMountItems = {"Tawny Windrider", "Blue Windrider", "Green Windrider"}
+
+function mount()
+	if IsOutdoors() then
+		for i=1, table.getn(vf_flyingMountSpells) do
+			cast(vf_flyingMountSpells[i])
+		end
+		for i=1, table.getn(vf_flyingMountItems) do
+			useItem(vf_flyingMountItems[i])
+		end
+		for i=1, table.getn(vf_landMountSpells) do
+			cast(vf_landMountSpells[i])
+		end
+		for i=1, table.getn(vf_landMountItems) do
+			useItem(vf_landMountItems[i])
+		end
+	end
+	efclear()
+end
+
 
 function pickAndDropItemOnTarget(itemName)
 	local bag, slot = bagSlotOf(itemName)

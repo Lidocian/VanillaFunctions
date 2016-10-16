@@ -30,6 +30,10 @@ function haveTarget()
 	return UnitName("target") ~= nil and UnitName("target") ~= ""
 end
 
+function targetName()
+	return UnitName("target")
+end
+
 function target(unit)
 	TargetUnit(unit)
 end

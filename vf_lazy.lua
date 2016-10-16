@@ -81,10 +81,10 @@ function vf_lazy_events:PARTY_INVITE_REQUEST()
 end
 
 function vf_lazy_events:RESURRECT_REQUEST()	
-	AcceptResurrect()
-	StaticPopup_Hide("RESURRECT_NO_TIMER")
-	StaticPopup_Hide("RESURRECT_NO_SICKNESS")
-	StaticPopup_Hide("RESURRECT")
+	--AcceptResurrect()
+	--StaticPopup_Hide("RESURRECT_NO_TIMER")
+	--StaticPopup_Hide("RESURRECT_NO_SICKNESS")
+	--StaticPopup_Hide("RESURRECT")
 end
 
 function vf_lazy_events:QUEST_GREETING()
