@@ -16,7 +16,7 @@ function unitWithGreatestHealthDeficitInUnitSetInRangeOfSpell(unitSet, spellName
 	return unitSet[greatestHealthDeficitIndex], greatestHealthDeficitValue
 end
 
-function basicPartyHeal(spell, rank, value)
+function partyHeal(spell, rank, value)
 	local partyUnitSet = getPartyUnitSet()
 	local unit, deficit = unitWithGreatestHealthDeficitInUnitSetInRangeOfSpell(partyUnitSet, spell)
 
